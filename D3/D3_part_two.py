@@ -1,62 +1,53 @@
 import time
-import math
 
 starttime = time.time()
 
 total_joltage = 0;
 
-BATTERY_BANK_SIZE = 2;
+BATTERY_BANK_SIZE = 12;
 
 # def dial(dial_current, number):
 #     new_dial_mod = (dial_current+number)%(maxDial+1);
 #     return new_dial_mod
 
+global output
+global output_index
+
+# FUCK YOU
+def push_down(output, output_index, index, limit, new_nmbr, new_nmbr_index):
+    # check if we are not past the end:
+    if index >= limit:
+        return; # We are finished
+    
+    old_nmbr       = output[index];
+    old_nmbr_index = output_index[index];
+    
+    if old_nmbr <= new_nmbr:
+        # The new number is bigger or just as big, so let's replace it and push the current number down the stack
+        if old_nmbr_index > new_nmbr_index:
+            #The index should be LARGER as the new number is further left in the data stream
+            output[index]       = new_nmbr;
+            output_index[index] = new_nmbr_index;
+            push_down(output, output_index, index+1, limit, old_nmbr, old_nmbr_index);
+        else:
+            return # done
+
 with open("input.txt") as file:
     for line in file:
-        print("SOL-------------------------");
-        print("The battery bank: ", line);
         str_number     = line.strip();
-        max_first      = 0;
-        max_second     = 0;
-        max_first_ind  = 0;
-        max_second_ind = 0;
-        output = [];
+        # print("Original Battery", str_number)
         output_index = [];
-        for i in range(BATTERY_BANK_SIZE):
-            output.append("0");       # store the value
-            output_index.append("0"); # store the index
-        index          = len(str_number);
-        index_output   = 0;
-        print(output)
-        for x in reversed(str_number):
-            for y in output:
-                if int(x) >= int(y):
-                    if index_output < BATTERY_BANK_SIZE:
-                        if output(index_output+1) < output_index:
-                            
-                    
-                    # if this variable 
+        output = list(line.strip()[-BATTERY_BANK_SIZE:]);
+        # output = list("0"*BATTERY_BANK_SIZE)
+        start = len(str_number) - BATTERY_BANK_SIZE;
+        output_index = list(range(start,start+BATTERY_BANK_SIZE));
+        index          = output_index[0];
+        for x in reversed(range(0, index)):
+            push_down(output,output_index,0,BATTERY_BANK_SIZE,str_number[x],x)
             
-            # if max_first == 9 and max_second == 9:
-            #     continue;
-            # # print(x);
-            # if int(x) >= max_first and index != len(str_number):
-            #     if max_second < max_first:
-            #         # if a new value that is larger is found, offload it onto the second entry
-            #         max_second = max_first;
-            #         max_second_ind = max_first_ind;
-            #     max_first = int(x);
-            #     max_first_ind = index;
-                
-            # if int(x) > max_second and index != max_first_ind and max_first_ind < index:
-            #     max_second = int(x);
-            #     max_second_ind = index;
-            # # reversing through the list so DECREASING the index
-            # index = index - 1;
-        total_joltage = total_joltage + int(str(max_first)+str(max_second));
-        print("The best battery combination is: ", int(str(max_first)+str(max_second)));
-        print("EOL------------------------");
-        
+        # print("Final Battery: ", int("".join(output)));
+        # print("Final index: ", output_index);
+        total_joltage = total_joltage + int("".join(output)); 
 
 endtime = time.time()
 print("The final joltage is: ", total_joltage);
