@@ -17,7 +17,7 @@ def load_data(filename):
         array = np.array(data);
         return array.T
     
-def load_data_KUT(filename):
+def load_data_KUT(filename): # part two load in data (absolutely horrid I hate it with a passion)
     col = []
     # row = []
     with open(filename) as file:
@@ -26,9 +26,7 @@ def load_data_KUT(filename):
             line = line.replace(" ", "-")
             col.append(line)
     
-    
     check_case = "-" * (len(col)-1)
-    # print("CHECK CASE: ", check_case)
     index = 0;
     temp_array = []
     output = []
@@ -36,27 +34,17 @@ def load_data_KUT(filename):
         temp = "";
         for i in range(len(col)-1):
             temp += col[i][x]
-        # print(temp, index, "CHCK CASE: ", check_case);
         if index == 0:
             operator = col[i+1][x]
         index += 1
         if temp == check_case:
-            # print("The line was just dashes");
-            # temp_array[len(temp)] = col[i+1][x-len(col)+1]
-            # temp_array[len(temp)] = operator
             temp_array.append(operator)
             output.append(temp_array);
             temp_array = []
             index = 0;
         else:
             temp_array.append(temp.strip("-"));
-        # if index == len(col):
-
-    # All the data is added only left is the operands.
-    # print(output[0])
     return output
-    
-    print(output)
 
 def calculator(array):
     temp_calc = 0;
@@ -70,8 +58,6 @@ def calculator(array):
         for i in range(length_array):
             temp_calc = temp_calc + int(array[i]);
         return temp_calc
-    # elif array[length_array] == "-": # multiplication
-    #     return 0
     else:
         print("I DONT RECOGNISE THIS CHARACTER!", array[len(array)])
         return 0
@@ -84,16 +70,9 @@ total_calculated = 0;
 array = load_data_KUT(filename)
 
 for i in range(len(array)):
-# for i in range(1):
-    # FuckedArray = cephalopodmath(array[i])
     total_calculated = total_calculated + calculator(array[i])
-    # print("TEMP: total calculated: ", total_calculated);
-
-
-
 
 endtime = time.time()
 
 print("total calculatd items: ", total_calculated);
 print("Program took: ", (endtime-starttime)*1000, " ms");
-# print(play_field)
