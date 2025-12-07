@@ -12,7 +12,6 @@ total = 0
 with open("input.txt") as file:
     for line in file:
         output = line.split(',');
-        
         # output is now an array with all entries seperated.
         for y in output:
             total_range = y.split('-');
