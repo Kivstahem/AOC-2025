@@ -5,8 +5,8 @@
 import math
 import time
 starttime = time.time()
-debug = True
-partTwo = True
+debug = False
+
 def load_data(filename):
     array = [];
     with open(filename) as file:
